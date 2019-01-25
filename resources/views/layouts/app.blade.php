@@ -16,7 +16,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -72,7 +72,33 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <a href="{{route('discussions.create')}}" class="btn btn-success btn-lg form-control">Create a new Discussion</a>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <br>        Channels
+                            </div>
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                    @foreach($channels as $channel)
+                                    <li class="list-group-item">
+                                                  {{$channel->title}}
+                                    </li>
+                                        @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-md-8">
+                    @yield('content')
+                </div>
+                </div>
+             </div>
+
         </main>
     </div>
 </body>

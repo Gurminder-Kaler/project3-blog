@@ -23,6 +23,32 @@ Route::get('{provider}/redirect', [
     'as'=>'social.callback'
 ]);
 
+Route::get('discussion/{slug}',[
+    'uses'=>'DiscussionsController@show',
+    'as'=>'discussion'
+]);
+
+
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/forum', 'ForumsController@index')->name('home');
+
+Route::group(['middleware'=>'auth'],function (){
+    Route::resource('channels', 'ChannelsController');
+    Route::get('discussions/create',[
+        'uses'=>'DiscussionsController@create',
+        'as'=>'discussions.create'
+    ]);
+    Route::post('discussion/store',[
+        'uses'=>'DiscussionsController@store',
+        'as'=>'discussions.store'
+    ]);
+    Route::post('/discussion/reply/{id}',[
+        'uses'=>'DiscussionsController@reply',
+        'as'=>'discussion.reply'
+    ]);
+    Route::get('/reply/like{id}',[
+        'uses'=>'ReplyController@like',
+        'as'=>'reply.like'
+    ]);
+});
