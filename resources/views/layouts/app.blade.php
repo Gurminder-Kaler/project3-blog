@@ -11,14 +11,45 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
-    <!-- Styles -->
+    {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">--}}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Styles -->
+
+    <style>
+        a>#disabled{
+            pointer-events: none;
+            cursor: default;
+
+        }
+        #list:hover{
+            background: #1b1e21;
+            padding: 5px;
+            clear: both;
+            color:black;
+            zoom: 1.2;
+              text-decoration: none;
+        }
+        #nicecardheading
+        {
+            background: #202326;
+            color:white;
+        }
+        #cardborder
+        {
+            border: 2px dotted darkgreen;
+        }
+    </style>
+
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -76,22 +107,47 @@
                 <div class="row">
 
                     <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+
+                                <ul class="list-group">
+                                    <a href="{{url('/forum')}}">
+                                        <li class="list-group-item">
+                                            Home
+                                        </li>
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                        <br>
+
                         <a href="{{route('discussions.create')}}" class="btn btn-success btn-lg form-control">Create a new Discussion</a>
 
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <br>        Channels
+                                <br>
+                                <h1>Channels <span class="fa fa-thumb-tack"></span><span class="pull-right"><a data-toggle="tooltip" title="Create new Channel" href="{{route('channels.create')}}"><i style="font-size: 30px" class="fa fa-plus-square"></i></a></span></h1>
                             </div>
                             <div class="panel-body">
-                                <ul class="list-group">
+                                <ul class="list-group" >
                                     @foreach($channels as $channel)
-                                    <li class="list-group-item">
-                                                  {{$channel->title}}
+                                        <a id="list" class="makeactive" href="{{route('channel',['slug'=>$channel->slug])}}">
+                                    <li class="list-group-item ">
+                                        {{str_limit($channel->title,20)}}
+                                        <span class="badge">
+                                            @if($channel->discussions->count() >0)
+                                            [{{$channel->discussions->count()}}]
+                                                @else
+                                                [empty]
+                                               @endif
+                                        </span>
                                     </li>
+                                        </a>
                                         @endforeach
                                 </ul>
                             </div>
                         </div>
+
                     </div>
                 <div class="col-md-8">
                     @yield('content')
@@ -101,5 +157,26 @@
 
         </main>
     </div>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+        @if(Session::has('info'))
+        toastr.info('{{Session::get('info')}}');
+        @elseif(Session::has('success'))
+        toastr.success('{{Session::get('success')}}');
+        @endif
+        function using(){
+            $(".makeactive").click(function(){
+                $(this).addClass("active");
+                // $().removeClass("active");
+            });
+        }
+    </script>
+@yield('scripts')
 </body>
 </html>

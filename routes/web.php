@@ -10,6 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/fun',function (){
+//    $d = array(10);
+    return view('fun');
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,13 +33,20 @@ Route::get('discussion/{slug}',[
 ]);
 
 
+Route::get('/channel/{slug}',
+    [
+        'uses'=>'ForumsController@channel',
+        'as'=>'channel'
+    ]);
 Auth::routes();
 
 Route::get('/forum', 'ForumsController@index')->name('home');
 
 Route::group(['middleware'=>'auth'],function (){
+
     Route::resource('channels', 'ChannelsController');
-    Route::get('discussions/create',[
+
+    Route::get('discussions/create/new',[
         'uses'=>'DiscussionsController@create',
         'as'=>'discussions.create'
     ]);
@@ -47,8 +58,25 @@ Route::group(['middleware'=>'auth'],function (){
         'uses'=>'DiscussionsController@reply',
         'as'=>'discussion.reply'
     ]);
-    Route::get('/reply/like{id}',[
-        'uses'=>'ReplyController@like',
+    Route::get('/reply/like/{id}',[
+        'uses'=>'RepliesController@like',
         'as'=>'reply.like'
+    ]);
+    Route::get('/reply/unlike/{id}',[
+        'uses'=>'RepliesController@unlike',
+        'as'=>'reply.unlike'
+    ]);
+    Route::get('discussion/watch/{id}',[
+        'uses'=>'WatchersController@watch',
+        'as'=>'discussion.watch'
+    ]);
+
+    Route::get('discussion/unwatch/{id}',[
+        'uses'=>'WatchersController@unwatch',
+        'as'=>'discussion.unwatch'
+    ]);
+    Route::get('/discussion/best/reply/{id}',[
+        'uses'=>'RepliesController@best_answer',
+        'as'=>'discussion.best.answer'
     ]);
 });

@@ -12,12 +12,12 @@ class ChannelSeeder extends Seeder
     public function run()
     {
         //
-        $channel1=['title'=>'laravel5.2'];
-        $channel2=['title'=>'laravel5.3'];
-        $channel3=['title'=>'laravel5.4'];
-        $channel4=['title'=>'laravel5.5'];
-        $channel5=['title'=>'laravel5.6'];
-        $channel6=['title'=>'laravel5.7'];
+        $channel1=['title'=>'laravel5.2','slug'=>str_slug('laravel5.2')];
+        $channel2=['title'=>'laravel5.3','slug'=>str_slug('laravel5.3')];
+        $channel3=['title'=>'laravel5.4','slug'=>str_slug('laravel5.4')];
+        $channel4=['title'=>'laravel5.5','slug'=>str_slug('laravel5.5')];
+        $channel5=['title'=>'laravel5.6','slug'=>str_slug('laravel5.6')];
+        $channel6=['title'=>'laravel5.7','slug'=>str_slug('laravel5.7')];
         Channel::create($channel1);
         Channel::create($channel2);
         Channel::create($channel3);

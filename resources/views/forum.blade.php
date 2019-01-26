@@ -15,14 +15,15 @@
                     <span class="fa fa-comment"></span>{{str_limit($d->content,30)}}
                 </div>
                 <div class="card-footer">
-                    {{$d->replies->count()}} : Replies <span class="pull-right">{{$d->created_at->diffForhumans()}}</span>
+                    {{$d->replies->count()}} : Replies <span style="padding:2px;border: 1px solid darkslategrey" class="pull-right"><i class="fa fa-link"></i>
+                        <a title="View all discussions on this topic" data-toggle="tooltip " href="{{route('channel',['slug'=>$d->channel->slug])}}">{{str_limit($d->channel->title,20)}}</a> <i class="fa fa-space-shuttle"></i> {{$d->created_at->diffForhumans()}}</span>
                 </div>
             </div>
            <hr>
            @endforeach <br>
 
    </div> <br>
-   <div  >
+   <div class="text-center">
        {{$discussions->links()}}
    </div>
 @endsection

@@ -63,6 +63,17 @@
                             </div>
                         </div>
                     </form>
+                    <br>
+                    @if(!Auth::check())
+                        <div class="links">
+                            <ul class="list-group text-center">
+                                <li class="list-group-item">
+                                    <a href="{{route('social.auth',['provider'=>'github'])}}">Login with GitHub <i class="fa fa-github"></i></a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

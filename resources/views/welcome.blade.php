@@ -69,7 +69,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/forum') }}">Goto the FORUM</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
@@ -79,13 +79,15 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    <a href="/forum" style="text-decoration: none;color: #000;">FORUM PROJECT BY GSK</a>
                 </div>
-
+                @if(!Auth::check())
                 <div class="links">
 
-                    <a href="{{route('social.auth',['provider'=>'github'])}}">GitHub</a>
+                    <a href="{{route('social.auth',['provider'=>'github'])}}">Login with GitHub</a>
+                    <a href="{{ route('login') }}">Login with Email</a>
                 </div>
+                    @endif
             </div>
         </div>
     </body>

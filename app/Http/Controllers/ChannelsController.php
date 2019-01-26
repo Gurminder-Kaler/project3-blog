@@ -17,7 +17,7 @@ class ChannelsController extends Controller
     public function index()
     {
         //
-        $channels = Channel::all();
+        $channels = Channel::orderBy('created_at','desc')->get();
         return view('channels.index')->with('channels',$channels);
     }
 
@@ -43,7 +43,8 @@ class ChannelsController extends Controller
         //
 
         Channel::create([
-            'title'=>$request->channel
+            'title'=>$request->channel,
+            'slug'=>str_slug($request->channel)
         ]);
         Session::flash('success','Channel has been created');
         return redirect()->route('channels.index');
@@ -85,6 +86,7 @@ class ChannelsController extends Controller
         //
         $value = Channel::findorFail($id);
         $value->title = $request->channel;
+        $value->slug = str_slug($request->channel);
         $value->save();
         Session::flash('success','Channel has been updated! ');
         return redirect()->route('channels.index');
