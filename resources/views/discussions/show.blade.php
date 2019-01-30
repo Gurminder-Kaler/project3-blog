@@ -1,3 +1,4 @@
+{{--this page displays each discussion and replies within that discussion--}}
 @extends('layouts.app')
 
 @section('content')
@@ -15,10 +16,16 @@
                     </div>
 
                 </div>
-                <div class="card ">
+                <div class="card " style="border-radius: 2px 32px 2px 2px">
                     <div class="card-header">
                         <img src="{{$d->user ? $d->user->avatar : 'No foto'}}" alt="Anonymous" width="40px" height="40px">
-                        {{$d->user?$d->user->name : "Anonymous"}}
+                        {{$d->user?$d->user->name : "Anonymous"}} - <span style="padding: 2px" class="badge-dark" data-toggle ="tooltip" title="User Xp Points"><i class="fa fa-xing"></i><sup>[{{$d->user->points}}]</sup></span>
+                        @if(Auth::id()==$d->user->id)
+                            @if(!$d->hasBestAnswer())
+                        <a href="{{route('discussion.edit',['slug'=>$d->slug])}}" class=" pull-right btn btn-sm" title="Only you can edit this!" data-toggle="tooltip"><i class="fa fa-edit"></i>Edit</a>
+                                @endif
+                        @endif
+
                         @if($d->is_being_watched_by_auth_user())
                             <div class="pull-right">
                                 <a href="{{route('discussion.unwatch',['id'=>$d->id])}}" class="btn btn-sm" title="Un-follow the discussion: no Email notifications will be shared about activities on this discussion" data-toggle="tooltip"><i class="fa fa-eye-slash"></i>Unwatch</a>
@@ -35,7 +42,8 @@
 
                     <div class="card-body">
                         <h2 class="text-left"><i class="fa fa-lightbulb-o"></i>{{$d->title}}</h2>
-                        <span class="fa fa-comment"></span>{{$d->content}}
+                        <span class="fa fa-hand-o-down"></span>{!! $d->content !!}
+                        {{--{!! Markdown::convertToHtml($d->content) !!}--}}
                     </div>
                     <div class="card-footer">
                         {{$d->replies->count()}} : Replies <span class="pull-right">{{$d->created_at->diffForhumans()}}</span>
@@ -49,10 +57,15 @@
                     <div class="col-md-11">
 
                         @foreach($d->replies as $r)
-                            <div class="card" id="cardborder">
+                            <div class="card" id="cardborder" >
                                 <div class="card-header" id="nicecardheading">
                                     <img src="{{$r->user ? $r->user->avatar:"No foto"}}" alt="Anonymous" width="40px" height="40px">
-                                    {{$r->user?$r->user->name : "Anonymous"}} <span class="fa fa-comment"></span>
+                                    {{$r->user?$r->user->name : "Anonymous"}}- <span style="padding: 2px" class="badge-dark" data-toggle ="tooltip" title="User Xp Points"><i class="fa fa-xing"></i><sup>[{{$r->user->points}}]</sup></span> <span class="fa fa-comment"></span>
+                                    @if(Auth::id()==$r->user->id)
+                                        @if(!$r->best_answer)
+                                            <span class="pull-right"><a href="{{route('reply.edit',['id'=>$r->id] )}}" style="text-decoration: none" class="btn-info btn-sm"> Edit </a></span>
+                                        @endif
+                                    @endif
                                     {{--<a href="{{route('discussion',['slug'=>$r->slug])}}" class="btn btn-info float-right">View</a>--}}
                                 </div>
 
@@ -67,18 +80,22 @@
                                         <span class="pull-left fa fa-thumbs-up"  ><a class="btn-sm btn-success" href="{{route('reply.like',['id'=>$r->id])}}">Like <span class="badge">{{$r->likes->count()}}</span></a></span>
                                     @endif
 
-                                        <span class="pull-right">&nbsp;{{$r->created_at->diffForhumans()}}</span>
+                                        <span class="pull-right">&nbsp;{{$r->created_at->diffForhumans()}} </span>
                                         @if(!$best_answer)
-                                        <span class="pull-right"><a href="{{route('discussion.best.answer',['id'=>$r->id] )}}" style="text-decoration: none" class="btn-info btn-sm"> Mark as Best Answer </a></span>
+                                                 @if(Auth::id() == $d->user->id)
+                                                <span class="pull-right"><a href="{{route('discussion.best.answer',['id'=>$r->id] )}}" style="text-decoration: none" class="btn-info btn-sm"> Mark as Best Answer </a></span>
+                                                     @endif
+
                                             @elseif($r->best_answer == 1)
                                             <span class="pull-right"> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>Best Answer </span>
                                             @endif
+
                                 </div>
                             </div>
                             <hr width="100px" style=" border: 1px solid darkolivegreen;"><hr width="90px" style=" border: 1px solid darkolivegreen;"><hr width="80px" style=" border: 1px solid darkolivegreen;">
                         @endforeach
                                 @if(Auth::check())
-                            <div class="card">
+                            <div class="card" style="border-radius: 2px 32px 2px 2px">
                                 <div class="card-body">
                                     <form action="{{route('discussion.reply',['id'=>$d->id])}}" method="post">
                                         {{csrf_field()}}

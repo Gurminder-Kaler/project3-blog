@@ -17,8 +17,15 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-    {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">--}}
+    <!-- Latest compiled and minified CSS -->
+
+    {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">--}}
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" />
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    @yield('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -40,16 +47,16 @@
         }
         #nicecardheading
         {
-            background: #202326;
-            color:white;
+            background: #202326!important;
+            color:white!important;
         }
         #cardborder
         {
-            border: 2px dotted darkgreen;
+            border: 2px dotted #212529;
         }
     </style>
 
-    @yield('styles')
+
 </head>
 <body>
     <div id="app">
@@ -81,7 +88,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    <img style="border:1px solid darkgreen" height="30px" width="30px" src="{{Auth::user()->avatar}}" alt="">&nbsp;{{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -101,7 +108,9 @@
                 </div>
             </div>
         </nav>
-
+        <div class="container">
+            @include('includes.error')
+        </div>
         <main class="py-4">
             <div class="container">
                 <div class="row">
@@ -116,6 +125,31 @@
                                             Home
                                         </li>
                                     </a>
+                                    <a href="{{url('/forum?filter=me')}}">
+                                        <li class="list-group-item">
+                                            My discussions
+                                        </li>
+                                    </a>
+                                    <a href="{{url('/forum?filter=solved')}}">
+                                        <li class="list-group-item">
+                                            Answered Questions
+                                        </li>
+                                    </a>
+                                    <a href="{{url('/forum?filter=unsolved')}}">
+                                        <li class="list-group-item">
+                                            Unanswered Questions
+                                        </li>
+                                    </a>
+                                    @if(Auth::check())
+                                        @if(Auth::user()->admin)
+                                            <a href="{{url('/channels')}}">
+                                                <li class="list-group-item">
+                                                    All Channels
+                                                </li>
+                                            </a>
+                                            @endif
+                                        @endif
+
                                 </ul>
                             </div>
                         </div>
@@ -159,9 +193,9 @@
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <script>

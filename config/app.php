@@ -148,6 +148,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         AdamWathan\EloquentOAuthL5\EloquentOAuthServiceProvider::class,
         Watson\Active\ActiveServiceProvider::class,
+        GrahamCampbell\Markdown\MarkdownServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -212,6 +213,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'SocialAuth' => AdamWathan\EloquentOAuth\Facades\OAuth::class,
         'Active' => Watson\Active\Facades\Active::class,
+        'Markdown' => GrahamCampbell\Markdown\Facades\Markdown::class,
     ],
 
 ];

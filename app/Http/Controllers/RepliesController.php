@@ -31,7 +31,22 @@ return redirect()->back();
         $reply = Reply::findorFail($id);
         $reply->best_answer =1;
         $reply->save();
-        Session::flash('success','Reply is marked as best answer');
+        $reply->user->points+=25;
+        $reply->user->save();
+        Session::flash('success','Reply is marked as best answer +25 Xp points for you!!');
         return redirect()->back();
+    }
+    public function edit($id){
+        return view('replies.edit',['reply'=>Reply::findorFail($id)]);
+    }
+    public function update($id){
+        $this->validate(request(),[
+            'content'=>'required'
+        ]);
+        $reply = Reply::findorFail($id);
+        $reply->content= request()->content;
+        $reply->save();
+        Session::flash('success','Updated the reply');
+        return redirect()->route('discussion',['slug'=>$reply->discussion->slug]);
     }
 }

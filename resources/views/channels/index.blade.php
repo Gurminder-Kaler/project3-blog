@@ -38,16 +38,16 @@
                                         <td><button type="submit" class="btn" data-toggle="tooltip" title="Only admin can Delete" style="cursor: not-allowed" onclick="return false;">Destroy channel</button></td>
                                                 @else
                                             <td><a href="{{route('channels.edit',['channel'=>$channel->id])}}"  class="btn btn-success">Edit</a></td>
-                                            <form action="{{route('channels.destroy',['channel'=>$channel->id])}}" method="post">
+                                            <td>
+                                                <form action="{{route('channels.destroy',['channel'=>$channel->id])}}" method="post">
                                                 {{csrf_field()}}
                                                 {{method_field('DELETE')}}
 
                                                 <button type="submit" class="btn btn-danger">Destroy channel</button>
+                                            </form>
+                                            </td>
                                         @endif
-                                        <td>
 
-                                        </form>
-                                        </td>
 
                                     </tr>
                                   @endforeach
